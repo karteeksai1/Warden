@@ -43,12 +43,13 @@ Warden operates as a single upstream MCP server to AI agents and a multi-protoco
 
 - **Gateway & Servers:** TypeScript, Node.js 20+, Express, `@modelcontextprotocol/sdk`, Zod, Vitest.
 - **Database & Data Layer:** Neon PostgreSQL with Drizzle ORM (`drizzle-kit` migrations).
-- **Caching & Ephemeral State:** Redis 7 (Docker Compose) for token-bucket rate limits, daily quotas, and approval metadata.
+- **Caching & Ephemeral State:** Upstash Redis via `REDIS_URL` for token-bucket rate limits, daily quotas, and approval metadata.
 - **Vector Search & Embeddings:** Pinecone index with integrated embeddings (`llama-text-embed-v2`). Postgres remains the source of truth; Pinecone acts as a rebuildable index keyed by tool ID.
 - **Agent:** Python LangGraph with Claude or GPT models.
 - **Dashboard:** React, Vite, Tailwind CSS, Recharts, Server-Sent Events (SSE).
 - **Observability:** OpenTelemetry-style structured spans stored in Postgres asynchronously.
-- **Deployment:** Docker Compose (local services: Redis, 4 HTTP downstream servers), Neon Postgres (remote), Gateway deployed to Render/Railway/Fly, Dashboard deployed to Vercel.
+- **Local Development:** Native Node.js processes orchestrated via `concurrently` (`npm run dev:all` runs gateway, four servers, and dashboard simultaneously). Docker Compose and Dockerfiles deferred to Phase 9 as a deployment/packaging task.
+- **Deployment:** Neon Postgres, Upstash Redis, Gateway deployed to Render/Railway/Fly, Dashboard deployed to Vercel, Docker packaging finalized in Phase 9.
 
 ## Success Criteria
 

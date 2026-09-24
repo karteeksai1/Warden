@@ -1,0 +1,39 @@
+{
+  "name": "warden",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "gateway",
+    "servers/*",
+    "evals",
+    "dashboard"
+  ],
+  "scripts": {
+    "build": "npm run --workspaces --if-present build",
+    "test": "vitest run",
+    "typecheck": "tsc -b",
+    "dev:gateway": "npm run --workspace=@warden/gateway dev",
+    "dev:orders": "npm run --workspace=@warden/server-orders dev",
+    "dev:refunds": "npm run --workspace=@warden/server-refunds dev",
+    "dev:kb": "npm run --workspace=@warden/server-kb dev",
+    "dev:email": "npm run --workspace=@warden/server-email dev",
+    "dev:dashboard": "npm run --workspace=@warden/dashboard dev",
+    "dev:servers": "concurrently -n orders,refunds,kb,email -c blue,green,yellow,magenta \"npm run dev:orders\" \"npm run dev:refunds\" \"npm run dev:kb\" \"npm run dev:email\"",
+    "dev:all": "concurrently -n gateway,orders,refunds,kb,email,dashboard -c cyan,blue,green,yellow,magenta,red \"npm run dev:gateway\" \"npm run dev:orders\" \"npm run dev:refunds\" \"npm run dev:kb\" \"npm run dev:email\" \"npm run dev:dashboard\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "@types/pg": "^8.11.8",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
+    "drizzle-kit": "^0.24.2",
+    "drizzle-orm": "^0.33.0",
+    "pg": "^8.12.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5",
+    "zod": "^3.23.8"
+  }
+}

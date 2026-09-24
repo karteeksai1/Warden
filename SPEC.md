@@ -9,13 +9,15 @@ Warden is an intelligent reverse proxy and policy enforcement layer positioned b
                    │
                    ▼ (Streamable HTTP / SSE)
          ┌───────────────────┐
-         │   Warden Gateway  │
+         │   Warden Gateway  │ ◄─── Upstash Redis (REDIS_URL) & Neon Postgres
          └─────────┬─────────┘
    ┌───────────────┼───────────────┬──────────────┐
    ▼               ▼               ▼              ▼
 [orders]       [refunds]         [kb]          [email]
 (HTTP MCP)     (HTTP MCP)     (HTTP MCP)     (HTTP MCP / stdio)
 ```
+
+In development, all components (gateway, 4 downstream servers, dashboard) run concurrently as native Node.js processes via `npm run dev:all`. Docker packaging and `docker-compose.yml` are deferred to Phase 9.
 
 ---
 
