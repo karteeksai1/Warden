@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.6.1",
+    "@pinecone-database/pinecone": "^9.0.0",
     "@warden/shared": "*",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
