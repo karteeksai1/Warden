@@ -1,18 +1,37 @@
 import { z } from "zod";
 
+const postgresUrlValidation = z.string().min(1).refine(
+  (value) => value.startsWith("postgres://") || value.startsWith("postgresql://"),
+  { message: "Must be a valid PostgreSQL connection string" }
+);
+
 export const environmentSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   PORT: z.coerce.number().int().min(1).max(65535).default(3000),
-  DATABASE_URL: z.string().min(1).refine(
-    (value) => value.startsWith("postgres://") || value.startsWith("postgresql://"),
-    { message: "DATABASE_URL must be a valid PostgreSQL connection string" }
-  ),
+  NEON_DATABASE_URL: postgresUrlValidation.optional(),
+  DATABASE_URL: postgresUrlValidation.optional(),
   REDIS_URL: z.string().min(1).refine(
     (value) => value.startsWith("redis://") || value.startsWith("rediss://"),
     { message: "REDIS_URL must be a valid Redis connection string" }
   ),
   PINECONE_API_KEY: z.string().min(1, "PINECONE_API_KEY is required"),
   PINECONE_INDEX_NAME: z.string().min(1, "PINECONE_INDEX_NAME is required")
+}).transform((data) => {
+  const databaseUrl = data.NEON_DATABASE_URL || data.DATABASE_URL;
+  if (!databaseUrl) {
+    throw new z.ZodError([
+      {
+        code: z.ZodIssueCode.custom,
+        path: ["NEON_DATABASE_URL"],
+        message: "Either NEON_DATABASE_URL or DATABASE_URL must be provided"
+      }
+    ]);
+  }
+  return {
+    ...data,
+    DATABASE_URL: databaseUrl,
+    NEON_DATABASE_URL: databaseUrl
+  };
 });
 
 export type Environment = z.infer<typeof environmentSchema>;

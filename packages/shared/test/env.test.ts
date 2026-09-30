@@ -3,31 +3,45 @@ import { parseEnvironment, safeParseEnvironment } from "../src/env.js";
 
 describe("Environment Schema Validation", () => {
   const validBaseConfig = {
-    DATABASE_URL: "postgresql://user:pass@localhost:5432/warden",
+    NEON_DATABASE_URL: "postgresql://user:pass@ep-sample.neon.tech/warden?sslmode=require",
     REDIS_URL: "redis://localhost:6379",
     PINECONE_API_KEY: "test-pinecone-key",
     PINECONE_INDEX_NAME: "test-index"
   };
 
-  it("should successfully parse valid environment configuration with defaults", () => {
+  it("should successfully parse valid environment configuration using NEON_DATABASE_URL", () => {
     const result = parseEnvironment(validBaseConfig);
 
     expect(result.NODE_ENV).toBe("development");
     expect(result.PORT).toBe(3000);
-    expect(result.DATABASE_URL).toBe(validBaseConfig.DATABASE_URL);
+    expect(result.NEON_DATABASE_URL).toBe(validBaseConfig.NEON_DATABASE_URL);
+    expect(result.DATABASE_URL).toBe(validBaseConfig.NEON_DATABASE_URL);
     expect(result.REDIS_URL).toBe(validBaseConfig.REDIS_URL);
     expect(result.PINECONE_API_KEY).toBe(validBaseConfig.PINECONE_API_KEY);
     expect(result.PINECONE_INDEX_NAME).toBe(validBaseConfig.PINECONE_INDEX_NAME);
   });
 
+  it("should accept DATABASE_URL as fallback when NEON_DATABASE_URL is omitted", () => {
+    const fallbackConfig = {
+      DATABASE_URL: "postgresql://user:pass@ep-fallback.neon.tech/warden",
+      REDIS_URL: "redis://localhost:6379",
+      PINECONE_API_KEY: "test-pinecone-key",
+      PINECONE_INDEX_NAME: "test-index"
+    };
+
+    const result = parseEnvironment(fallbackConfig);
+    expect(result.DATABASE_URL).toBe(fallbackConfig.DATABASE_URL);
+    expect(result.NEON_DATABASE_URL).toBe(fallbackConfig.DATABASE_URL);
+  });
+
   it("should accept valid postgres:// alternative scheme", () => {
     const config = {
       ...validBaseConfig,
-      DATABASE_URL: "postgres://user:pass@localhost:5432/warden"
+      NEON_DATABASE_URL: "postgres://user:pass@localhost:5432/warden"
     };
 
     const result = parseEnvironment(config);
-    expect(result.DATABASE_URL).toBe(config.DATABASE_URL);
+    expect(result.NEON_DATABASE_URL).toBe(config.NEON_DATABASE_URL);
   });
 
   it("should accept rediss:// secure redis scheme", () => {
@@ -93,7 +107,7 @@ describe("Environment Schema Validation", () => {
   it("should reject invalid database url schemes", () => {
     const config = {
       ...validBaseConfig,
-      DATABASE_URL: "mysql://user:pass@localhost:3306/db"
+      NEON_DATABASE_URL: "mysql://user:pass@localhost:3306/db"
     };
 
     const result = safeParseEnvironment(config);
@@ -110,16 +124,15 @@ describe("Environment Schema Validation", () => {
     expect(result.success).toBe(false);
   });
 
-  it("should reject missing required fields", () => {
-    const missingKeys = ["DATABASE_URL", "REDIS_URL", "PINECONE_API_KEY", "PINECONE_INDEX_NAME"] as const;
+  it("should reject when both NEON_DATABASE_URL and DATABASE_URL are missing", () => {
+    const config = {
+      REDIS_URL: "redis://localhost:6379",
+      PINECONE_API_KEY: "test-pinecone-key",
+      PINECONE_INDEX_NAME: "test-index"
+    };
 
-    for (const key of missingKeys) {
-      const config = { ...validBaseConfig };
-      delete config[key];
-
-      const result = safeParseEnvironment(config);
-      expect(result.success).toBe(false);
-    }
+    const result = safeParseEnvironment(config);
+    expect(result.success).toBe(false);
   });
 
   it("should reject empty string values for required fields", () => {
