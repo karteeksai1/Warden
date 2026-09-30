@@ -15,3 +15,4 @@ export function createDatabaseClient(connectionString: string) {
 
 export type DatabaseClient = ReturnType<typeof createDatabaseClient>;
 export * from "./schema.js";
+export { eq, and, or, inArray } from "drizzle-orm";
