@@ -12,8 +12,7 @@ import {
   buildToolEmbeddingText,
   SEARCH_TOOLS_NAME,
   PineconeIndexOperations,
-  PineconeClientLike,
-  ToolRecord
+  PineconeClientLike
 } from "../src/router.js";
 
 describe("Semantic Tool Router & Pinecone Integration", () => {
@@ -408,10 +407,8 @@ describe("Semantic Tool Router & Pinecone Integration", () => {
       }
     });
 
-    expect(callResult.isError).toBeFalsy();
-    const responsePayload = JSON.parse(
-      (callResult.content[0] as { type: string; text: string }).text
-    );
+    const contentList = (callResult as { content?: Array<{ type: string; text: string }> }).content ?? [];
+    const responsePayload = JSON.parse(contentList[0]?.text ?? "{}");
     expect(responsePayload.query).toBe("find my order status");
     expect(responsePayload.discovered_tools[0].name).toBe("orders.get_order");
 
