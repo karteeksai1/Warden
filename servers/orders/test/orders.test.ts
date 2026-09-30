@@ -6,6 +6,28 @@ import { OrderService } from "../src/service.js";
 import { createOrdersApp } from "../src/app.js";
 import { Server } from "node:http";
 
+function getFirstTextContent(result: unknown): string {
+  if (typeof result === "object" && result !== null && "content" in result) {
+    const content = (result as { content: unknown[] }).content;
+    const firstItem = content[0] as { type: string; text: string } | undefined;
+    if (firstItem && typeof firstItem.text === "string") {
+      return firstItem.text;
+    }
+  }
+  throw new Error("Expected text content in result");
+}
+
+function getFirstContentType(result: unknown): string {
+  if (typeof result === "object" && result !== null && "content" in result) {
+    const content = (result as { content: unknown[] }).content;
+    const firstItem = content[0] as { type: string } | undefined;
+    if (firstItem && typeof firstItem.type === "string") {
+      return firstItem.type;
+    }
+  }
+  throw new Error("Expected content type in result");
+}
+
 describe("Orders MCP Server Tools", () => {
   let client: Client;
   let clientTransport: InMemoryTransport;
@@ -52,10 +74,9 @@ describe("Orders MCP Server Tools", () => {
     });
 
     expect(result.isError).toBeFalsy();
-    expect(result.content).toBeDefined();
-    expect(result.content[0]?.type).toBe("text");
+    expect(getFirstContentType(result)).toBe("text");
 
-    const parsedOrder = JSON.parse(result.content[0]?.text as string);
+    const parsedOrder = JSON.parse(getFirstTextContent(result));
     expect(parsedOrder.order_id).toBe("4821");
     expect(parsedOrder.customer_id).toBe("cust_101");
     expect(parsedOrder.customer_name).toBe("Alice Smith");
@@ -73,8 +94,8 @@ describe("Orders MCP Server Tools", () => {
     });
 
     expect(result.isError).toBe(true);
-    expect(result.content[0]?.type).toBe("text");
-    expect(result.content[0]?.text).toContain("Order not found with ID: non_existent_9999");
+    expect(getFirstContentType(result)).toBe("text");
+    expect(getFirstTextContent(result)).toContain("Order not found with ID: non_existent_9999");
   });
 
   it("should reject get_order with empty order_id", async () => {
@@ -93,7 +114,7 @@ describe("Orders MCP Server Tools", () => {
     });
 
     expect(result.isError).toBeFalsy();
-    const customerOrders = JSON.parse(result.content[0]?.text as string);
+    const customerOrders = JSON.parse(getFirstTextContent(result));
     expect(Array.isArray(customerOrders)).toBe(true);
     expect(customerOrders.length).toBeGreaterThanOrEqual(2);
 
@@ -109,7 +130,7 @@ describe("Orders MCP Server Tools", () => {
     });
 
     expect(result.isError).toBeFalsy();
-    const customerOrders = JSON.parse(result.content[0]?.text as string);
+    const customerOrders = JSON.parse(getFirstTextContent(result));
     expect(customerOrders).toEqual([]);
   });
 
@@ -129,7 +150,7 @@ describe("Orders MCP Server Tools", () => {
     });
 
     expect(result.isError).toBeFalsy();
-    const tracking = JSON.parse(result.content[0]?.text as string);
+    const tracking = JSON.parse(getFirstTextContent(result));
     expect(tracking.carrier).toBe("FedEx");
     expect(tracking.tracking_number).toBe("FX-4821-9988");
     expect(tracking.status).toBe("delivered");
@@ -144,7 +165,7 @@ describe("Orders MCP Server Tools", () => {
     });
 
     expect(result.isError).toBe(true);
-    expect(result.content[0]?.text).toContain("Tracking information not found for order ID: non_existent_tracking_id");
+    expect(getFirstTextContent(result)).toContain("Tracking information not found for order ID: non_existent_tracking_id");
   });
 
   it("should reject get_tracking with empty order_id", async () => {
@@ -184,7 +205,7 @@ describe("Orders Express App Endpoints", () => {
     const response = await fetch(`${baseUrl}/health`);
     expect(response.status).toBe(200);
 
-    const body = await response.json();
+    const body = (await response.json()) as { status: string; server: string; tools: string[] };
     expect(body.status).toBe("healthy");
     expect(body.server).toBe("orders");
     expect(body.tools).toEqual(["get_order", "list_orders", "get_tracking"]);
@@ -198,7 +219,7 @@ describe("Orders Express App Endpoints", () => {
     });
 
     expect(response.status).toBe(400);
-    const body = await response.json();
+    const body = (await response.json()) as { error: string };
     expect(body.error).toContain("Missing sessionId");
   });
 
@@ -210,7 +231,7 @@ describe("Orders Express App Endpoints", () => {
     });
 
     expect(response.status).toBe(404);
-    const body = await response.json();
+    const body = (await response.json()) as { error: string };
     expect(body.error).toContain("Session not found");
   });
 });
