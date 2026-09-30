@@ -16,17 +16,17 @@ export const environmentSchema = z.object({
   ),
   PINECONE_API_KEY: z.string().min(1, "PINECONE_API_KEY is required"),
   PINECONE_INDEX_NAME: z.string().min(1, "PINECONE_INDEX_NAME is required")
-}).transform((data) => {
+}).superRefine((data, context) => {
   const databaseUrl = data.NEON_DATABASE_URL || data.DATABASE_URL;
   if (!databaseUrl) {
-    throw new z.ZodError([
-      {
-        code: z.ZodIssueCode.custom,
-        path: ["NEON_DATABASE_URL"],
-        message: "Either NEON_DATABASE_URL or DATABASE_URL must be provided"
-      }
-    ]);
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["NEON_DATABASE_URL"],
+      message: "Either NEON_DATABASE_URL or DATABASE_URL must be provided"
+    });
   }
+}).transform((data) => {
+  const databaseUrl = (data.NEON_DATABASE_URL || data.DATABASE_URL)!;
   return {
     ...data,
     DATABASE_URL: databaseUrl,
