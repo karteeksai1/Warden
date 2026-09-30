@@ -1,0 +1,37 @@
+[
+  {
+    "id": "pol_damaged_goods",
+    "title": "Damaged or Defective Items Policy",
+    "category": "returns_and_refunds",
+    "content": "If an item arrives damaged, defective, or crushed during shipment, customers are eligible for an immediate full refund or complimentary replacement. The claim must be initiated within 7 calendar days of delivery. Photographic evidence or order receipt may be requested by customer support. Damaged item refunds under $50 are auto-approved upon claim submission; refunds exceeding $50 require customer support tier-2 supervisor sign-off before settlement.",
+    "keywords": ["damaged", "broken", "defective", "crushed", "shattered", "faulty", "replacement", "refund", "delivery"]
+  },
+  {
+    "id": "pol_return_window",
+    "title": "Standard 30-Day Return Window Policy",
+    "category": "returns",
+    "content": "Customers may return any eligible non-perishable product within 30 days of the delivery date for a full refund to the original payment method. Items must be in their original packaging with all included accessories, manuals, and tags intact. Return shipping labels are provided free of charge for VIP tier customers, while standard accounts incur a $4.99 flat shipping deduction unless the return is due to company error or product defect.",
+    "keywords": ["return", "window", "30 days", "packaging", "original", "tags", "shipping label", "timeline"]
+  },
+  {
+    "id": "pol_refund_thresholds",
+    "title": "Refund Amount Limits and Manager Approval Policy",
+    "category": "compliance_and_governance",
+    "content": "To prevent unauthorized financial loss, automated refunds are strictly capped. In accordance with system policy: (1) Single refunds equal to or below $50.00 can be processed autonomously. (2) Any single refund request greater than $50.00 must be queued for administrative review and approved by a human manager prior to disbursement. (3) Cumulative daily refunds to an account or agent cannot exceed $1,000.00. (4) Refunds must always disburse to the registered account owner of the originating order.",
+    "keywords": ["approval", "manager", "50", "threshold", "limit", "cap", "daily", "compliance", "unauthorized", "tier-2"]
+  },
+  {
+    "id": "pol_electronics_restocking",
+    "title": "Consumer Electronics and Open-Box Restocking Fee Policy",
+    "category": "electronics",
+    "content": "Consumer electronics, computers, audio equipment, and wireless peripherals carry a specialized 14-day return window starting from confirmed delivery. If the factory seal is broken on non-defective electronics, a 15% restocking fee applies to cover recertification and testing. Defective or DOA (dead on arrival) electronics are fully exempt from restocking fees and qualify for an immediate priority exchange.",
+    "keywords": ["electronics", "restocking", "fee", "15%", "headphones", "monitors", "laptops", "peripherals", "open box"]
+  },
+  {
+    "id": "pol_carrier_disputes",
+    "title": "Carrier Tracking and Lost in Transit Policy",
+    "category": "shipping",
+    "content": "When tracking displays 'delivered' but the customer has not received the package, or if transit status has stalled for more than 5 consecutive business days, a carrier dispute is filed. Support agents will first verify the destination address and delivery coordinates with FedEx, UPS, or USPS. If unresolved after 72 hours, a trace investigation ticket is created and a replacement or refund is triggered.",
+    "keywords": ["lost", "stolen", "missing", "tracking", "carrier", "dispute", "investigation", "fedex", "ups", "usps"]
+  }
+]
