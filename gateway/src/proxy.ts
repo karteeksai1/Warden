@@ -2,10 +2,12 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { DownstreamManager } from "./downstream.js";
 import { SemanticToolRouter, SEARCH_TOOLS_NAME, SEARCH_TOOLS_DEFINITION } from "./router.js";
+import { SecurityScanner } from "./scanner.js";
 
 export function createGatewayMcpServer(
   downstreamManager: DownstreamManager,
-  router?: SemanticToolRouter
+  router?: SemanticToolRouter,
+  scanner?: SecurityScanner
 ): Server {
   const server = new Server(
     {
@@ -54,6 +56,21 @@ export function createGatewayMcpServer(
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
 
+    if (scanner) {
+      const inputVerdict = scanner.scanAndSanitizeInput(args);
+      if (inputVerdict.hasInjection) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: `Security policy violation: prompt injection detected in tool input (${inputVerdict.injectionReason})`
+            }
+          ]
+        };
+      }
+    }
+
     if (router && name === SEARCH_TOOLS_NAME) {
       try {
         const query = String(args?.query ?? "");
@@ -90,7 +107,27 @@ export function createGatewayMcpServer(
     }
 
     try {
-      const result = await downstreamManager.callTool(name, (args ?? {}) as Record<string, unknown>);
+      const sanitizedArgs = scanner
+        ? (scanner.redactSensitiveData(args).redactedContent as Record<string, unknown>)
+        : (args ?? {}) as Record<string, unknown>;
+      const result = await downstreamManager.callTool(name, sanitizedArgs ?? {});
+
+      if (scanner) {
+        const outputVerdict = scanner.scanAndSanitizeOutput(result);
+        if (outputVerdict.hasInjection) {
+          return {
+            isError: true,
+            content: [
+              {
+                type: "text",
+                text: `Security policy violation: prompt injection detected in tool output (${outputVerdict.injectionReason})`
+              }
+            ]
+          };
+        }
+        return outputVerdict.sanitizedContent as typeof result;
+      }
+
       return result;
     } catch (error) {
       return {

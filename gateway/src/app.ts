@@ -3,10 +3,14 @@ import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import { AuthService } from "./auth.js";
 import { DownstreamManager } from "./downstream.js";
 import { createGatewayMcpServer } from "./proxy.js";
+import { SemanticToolRouter } from "./router.js";
+import { SecurityScanner } from "./scanner.js";
 
 export function createGatewayApp(
   authService: AuthService,
-  downstreamManager: DownstreamManager
+  downstreamManager: DownstreamManager,
+  router?: SemanticToolRouter,
+  scanner?: SecurityScanner
 ) {
   const app = express();
   const activeTransports = new Map<string, SSEServerTransport>();
@@ -34,7 +38,7 @@ export function createGatewayApp(
       activeTransports.delete(sessionId);
     });
 
-    const mcpServer = createGatewayMcpServer(downstreamManager);
+    const mcpServer = createGatewayMcpServer(downstreamManager, router, scanner);
     await mcpServer.connect(transport);
   });
 
