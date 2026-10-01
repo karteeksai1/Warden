@@ -151,8 +151,8 @@ export const Analytics: React.FC = () => {
                   ]}
                 />
                 <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }} />
-                <Bar dataKey="baselineTokens" name="Baseline (Unrouted)" fill="#475569" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="routedTokens" name="Warden Dynamic" fill="#06b6d4" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="baselineTokens" name="Baseline (Unrouted)" fill="#475569" radius={[4, 4, 0, 0]} isAnimationActive={false} />
+                <Bar dataKey="routedTokens" name="Warden Dynamic" fill="#06b6d4" radius={[4, 4, 0, 0]} isAnimationActive={false} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -171,16 +171,16 @@ export const Analytics: React.FC = () => {
 
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data.routerLatencyBySize} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+              <LineChart data={data.routerLatencyBySize} margin={{ top: 10, right: 15, left: -10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="corpusSize" tick={{ fill: "#94a3b8", fontSize: 11 }} tickFormatter={(v) => `${v} tools`} />
+                <XAxis type="category" dataKey="corpusSize" tick={{ fill: "#94a3b8", fontSize: 11 }} tickFormatter={(v) => `${v} tools`} />
                 <YAxis tick={{ fill: "#94a3b8", fontSize: 11 }} unit="ms" />
                 <Tooltip
                   contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155", borderRadius: "8px", fontSize: "12px" }}
                 />
                 <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }} />
-                <Line type="monotone" dataKey="p50Ms" name="P50 Latency (ms)" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="p95Ms" name="P95 Latency (ms)" stroke="#f59e0b" strokeWidth={2} dot={{ r: 4 }} />
+                <Line type="monotone" dataKey="p50Ms" name="P50 Latency (ms)" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} isAnimationActive={false} />
+                <Line type="monotone" dataKey="p95Ms" name="P95 Latency (ms)" stroke="#f59e0b" strokeWidth={2} dot={{ r: 4 }} isAnimationActive={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -193,30 +193,29 @@ export const Analytics: React.FC = () => {
           </h4>
           <p className="text-xs text-slate-400 mb-4">Deterministic policy rule evaluations over 1,420 total calls</p>
 
-          <div className="h-64 flex flex-col md:flex-row items-center justify-center">
-            <div className="w-full h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={55}
-                    outerRadius={80}
-                    paddingAngle={4}
-                    dataKey="value"
-                  >
-                    {pieData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={DECISION_COLORS[index % DECISION_COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155", borderRadius: "8px", fontSize: "12px" }}
-                  />
-                  <Legend wrapperStyle={{ fontSize: "11px" }} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="40%"
+                  innerRadius={45}
+                  outerRadius={68}
+                  paddingAngle={4}
+                  dataKey="value"
+                  isAnimationActive={false}
+                >
+                  {pieData.map((_, index) => (
+                    <Cell key={`cell-${index}`} fill={DECISION_COLORS[index % DECISION_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155", borderRadius: "8px", fontSize: "12px" }}
+                />
+                <Legend wrapperStyle={{ fontSize: "11px" }} />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
@@ -229,15 +228,20 @@ export const Analytics: React.FC = () => {
 
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.topTools} layout="vertical" margin={{ top: 5, right: 20, left: 40, bottom: 5 }}>
+              <BarChart data={data.topTools} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
                 <XAxis type="number" tick={{ fill: "#94a3b8", fontSize: 11 }} />
-                <YAxis type="category" dataKey="name" tick={{ fill: "#94a3b8", fontSize: 10, fontFamily: "monospace" }} />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  width={155}
+                  tick={{ fill: "#94a3b8", fontSize: 10, fontFamily: "monospace" }}
+                />
                 <Tooltip
                   contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155", borderRadius: "8px", fontSize: "12px" }}
                   formatter={(value: any, name: any) => [value, name === "calls" ? "Total Calls" : "Avg Latency (ms)"]}
                 />
-                <Bar dataKey="calls" name="Total Calls" fill="#3b82f6" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="calls" name="Total Calls" fill="#3b82f6" radius={[0, 4, 4, 0]} isAnimationActive={false} />
               </BarChart>
             </ResponsiveContainer>
           </div>
