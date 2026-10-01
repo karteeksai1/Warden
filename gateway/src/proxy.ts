@@ -152,6 +152,85 @@ export function createGatewayMcpServer(
       }
     }
 
+    if (name === "gateway.check_approval" || name === "check_approval") {
+      const approvalId = String(args?.approval_id ?? args?.id ?? "");
+      const approval = await telemetry?.getApprovalById(approvalId);
+      const latencyMs = Math.round(performance.now() - startTime);
+
+      if (!approval) {
+        const notFoundResult = {
+          status: "NOT_FOUND",
+          approval_id: approvalId,
+          message: `Approval request ${approvalId} was not found`
+        };
+        telemetry?.recordTraceAsync({
+          sessionId,
+          agentId,
+          toolName: name,
+          arguments: args,
+          result: notFoundResult,
+          policyDecision: "allow",
+          latencyMs
+        });
+        return {
+          content: [{ type: "text", text: JSON.stringify(notFoundResult) }]
+        };
+      }
+
+      const approvalResult = {
+        approval_id: approval.id,
+        status: approval.status,
+        tool_name: approval.toolName,
+        decided_by: approval.decidedBy ?? null,
+        decided_at: approval.decidedAt ?? null,
+        arguments: approval.arguments
+      };
+
+      telemetry?.recordTraceAsync({
+        sessionId,
+        agentId,
+        toolName: name,
+        arguments: args,
+        result: approvalResult,
+        policyDecision: "allow",
+        latencyMs
+      });
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(approvalResult) }]
+      };
+    }
+
+    if (name === "refunds.issue_refund" || name === "issue_refund") {
+      const amount = Number(args?.amount ?? 0);
+      if (amount > 50) {
+        const approvalRecord = await telemetry?.createApproval({
+          toolName: name,
+          arguments: (args ?? {}) as Record<string, unknown>
+        });
+        const latencyMs = Math.round(performance.now() - startTime);
+        const pendingResponse = {
+          status: "PENDING_APPROVAL",
+          approval_id: approvalRecord?.id ?? `appr-${Date.now()}`,
+          message: `Refund of $${amount.toFixed(2)} exceeds auto-approval threshold ($50.00). Human approval required. Check status using gateway.check_approval.`
+        };
+
+        telemetry?.recordTraceAsync({
+          sessionId,
+          agentId,
+          toolName: name,
+          arguments: args,
+          result: pendingResponse,
+          policyDecision: "require_approval",
+          latencyMs
+        });
+
+        return {
+          content: [{ type: "text", text: JSON.stringify(pendingResponse) }]
+        };
+      }
+    }
+
     try {
       const sanitizedArgs = scanner
         ? (scanner.redactSensitiveData(args).redactedContent as Record<string, unknown>)
