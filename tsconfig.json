@@ -20,5 +20,6 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "noEmit": true
-  }
+  },
+  "exclude": ["dashboard", "node_modules", "dist"]
 }

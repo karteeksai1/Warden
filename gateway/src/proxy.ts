@@ -3,11 +3,19 @@ import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprot
 import { DownstreamManager } from "./downstream.js";
 import { SemanticToolRouter, SEARCH_TOOLS_NAME, SEARCH_TOOLS_DEFINITION } from "./router.js";
 import { SecurityScanner } from "./scanner.js";
+import { TelemetryService } from "./telemetry/index.js";
+
+export interface SessionContext {
+  sessionId?: string;
+  agentId?: string;
+}
 
 export function createGatewayMcpServer(
   downstreamManager: DownstreamManager,
   router?: SemanticToolRouter,
-  scanner?: SecurityScanner
+  scanner?: SecurityScanner,
+  telemetry?: TelemetryService,
+  sessionContext?: SessionContext
 ): Server {
   const server = new Server(
     {
@@ -54,11 +62,26 @@ export function createGatewayMcpServer(
   });
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    const startTime = performance.now();
+    const sessionId = sessionContext?.sessionId ?? "session_default";
+    const agentId = sessionContext?.agentId;
     const { name, arguments: args } = request.params;
 
     if (scanner) {
       const inputVerdict = scanner.scanAndSanitizeInput(args);
       if (inputVerdict.hasInjection) {
+        const latencyMs = Math.round(performance.now() - startTime);
+        telemetry?.recordTraceAsync({
+          sessionId,
+          agentId,
+          toolName: name,
+          arguments: args,
+          result: { error: inputVerdict.injectionReason },
+          policyDecision: "deny",
+          scannerVerdict: inputVerdict,
+          latencyMs
+        });
+
         return {
           isError: true,
           content: [
@@ -76,8 +99,7 @@ export function createGatewayMcpServer(
         const query = String(args?.query ?? "");
         const topK = typeof args?.top_k === "number" ? args.top_k : 5;
         const searchResult = await router.searchTools(query, topK);
-
-        return {
+        const searchResponse = {
           content: [
             {
               type: "text",
@@ -93,7 +115,31 @@ export function createGatewayMcpServer(
             }
           ]
         };
+
+        const latencyMs = Math.round(performance.now() - startTime);
+        telemetry?.recordTraceAsync({
+          sessionId,
+          agentId,
+          toolName: name,
+          arguments: args,
+          result: searchResponse,
+          policyDecision: "allow",
+          latencyMs
+        });
+
+        return searchResponse;
       } catch (error) {
+        const latencyMs = Math.round(performance.now() - startTime);
+        telemetry?.recordTraceAsync({
+          sessionId,
+          agentId,
+          toolName: name,
+          arguments: args,
+          result: { error: error instanceof Error ? error.message : String(error) },
+          policyDecision: "allow",
+          latencyMs
+        });
+
         return {
           isError: true,
           content: [
@@ -114,7 +160,20 @@ export function createGatewayMcpServer(
 
       if (scanner) {
         const outputVerdict = scanner.scanAndSanitizeOutput(result);
+        const latencyMs = Math.round(performance.now() - startTime);
+
         if (outputVerdict.hasInjection) {
+          telemetry?.recordTraceAsync({
+            sessionId,
+            agentId,
+            toolName: name,
+            arguments: sanitizedArgs,
+            result: outputVerdict,
+            policyDecision: "deny",
+            scannerVerdict: outputVerdict,
+            latencyMs
+          });
+
           return {
             isError: true,
             content: [
@@ -125,11 +184,45 @@ export function createGatewayMcpServer(
             ]
           };
         }
+
+        telemetry?.recordTraceAsync({
+          sessionId,
+          agentId,
+          toolName: name,
+          arguments: sanitizedArgs,
+          result: outputVerdict.sanitizedContent,
+          policyDecision: "allow",
+          scannerVerdict: outputVerdict,
+          latencyMs
+        });
+
         return outputVerdict.sanitizedContent as typeof result;
       }
 
+      const latencyMs = Math.round(performance.now() - startTime);
+      telemetry?.recordTraceAsync({
+        sessionId,
+        agentId,
+        toolName: name,
+        arguments: sanitizedArgs,
+        result,
+        policyDecision: "allow",
+        latencyMs
+      });
+
       return result;
     } catch (error) {
+      const latencyMs = Math.round(performance.now() - startTime);
+      telemetry?.recordTraceAsync({
+        sessionId,
+        agentId,
+        toolName: name,
+        arguments: (args ?? {}) as Record<string, unknown>,
+        result: { error: error instanceof Error ? error.message : String(error) },
+        policyDecision: "allow",
+        latencyMs
+      });
+
       return {
         isError: true,
         content: [
