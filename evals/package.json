@@ -15,7 +15,8 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "generate-corpus": "tsx generate_corpus.ts",
-    "benchmark": "tsx router_benchmark.ts"
+    "benchmark": "tsx router_benchmark.ts",
+    "run-evals": "tsx run_evals.ts"
   },
   "dependencies": {
     "@warden/gateway": "*",

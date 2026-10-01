@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Warden Gateway - Comprehensive Evaluation Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #090d16; color: #f8fafc; margin: 0; padding: 2rem; }
+    h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    p.subtitle { color: #94a3b8; font-size: 0.95rem; margin-top: 0; margin-bottom: 2rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 0.75rem; padding: 1.25rem; }
+    .card h3 { margin: 0 0 0.5rem 0; font-size: 0.85rem; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.05em; }
+    .card .val { font-size: 1.8rem; font-weight: bold; font-family: monospace; }
+    .text-emerald { color: #10b981; }
+    .text-cyan { color: #06b6d4; }
+    .text-amber { color: #f59e0b; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; font-size: 0.88rem; background: #0f172a; border-radius: 0.75rem; overflow: hidden; border: 1px solid #1e293b; }
+    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #1e293b; }
+    th { background: #1e293b; color: #cbd5e1; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
+    tr:hover { background: #1e293b/40; }
+    .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-family: monospace; font-weight: bold; }
+    .badge-green { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-red { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-blue { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.4); }
+  </style>
+</head>
+<body>
+  <h1>Warden MCP Gateway Benchmark</h1>
+  <p class="subtitle">Feature-flagged evaluation across 4 configurations (Baseline vs Router vs Policy vs Full Gateway)</p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Token Reduction</h3>
+      <div class="val text-emerald">96.6%</div>
+      <p style="font-size:0.8rem; color:#64748b; margin:0.4rem 0 0 0;">461 tokens vs 13,386 unrouted</p>
+    </div>
+    <div class="card">
+      <h3>Attack Block Rate</h3>
+      <div class="val text-emerald">100.0%</div>
+      <p style="font-size:0.8rem; color:#64748b; margin:0.4rem 0 0 0;">44/44 red-team cases intercepted</p>
+    </div>
+    <div class="card">
+      <h3>False Positive Rate</h3>
+      <div class="val text-cyan">0.0%</div>
+      <p style="font-size:0.8rem; color:#64748b; margin:0.4rem 0 0 0;">66/66 benign cases passed cleanly</p>
+    </div>
+    <div class="card">
+      <h3>Router P50 Latency</h3>
+      <div class="val text-cyan">0.85 ms</div>
+      <p style="font-size:0.8rem; color:#64748b; margin:0.4rem 0 0 0;">P95: 1.63 ms across 200 tools</p>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Configuration</th>
+        <th>Task Success</th>
+        <th>Top-1 / Top-5 Acc.</th>
+        <th>Tokens / Task</th>
+        <th>Attack Block</th>
+        <th>False Positives</th>
+        <th>Router Latency (P50/P95)</th>
+        <th>Policy/Scan Latency (P50/P95)</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+          <td><strong>Configuration A: Baseline</strong><br><small style="color:#64748b;">Direct unrouted MCP connection. All 200 tools loaded statically in prompt without security/policy gates.</small></td>
+          <td><span class="badge badge-green">88.4%</span></td>
+          <td><code>60% / 88.4%</code></td>
+          <td><code>16574 (baseline)</code></td>
+          <td><span class="badge badge-red">0%</span></td>
+          <td><code>0% (0/66)</code></td>
+          <td><code>0ms / 0ms</code></td>
+          <td><code>0ms / 0ms</code></td>
+        </tr>
+      
+        <tr>
+          <td><strong>Configuration B: Router Only</strong><br><small style="color:#64748b;">Semantic vector router exposes top-k relevant tools dynamically. No policy bounds or security scanner.</small></td>
+          <td><span class="badge badge-blue">71.6%</span></td>
+          <td><code>47.4% / 71.6%</code></td>
+          <td><code>457 (-97.2%)</code></td>
+          <td><span class="badge badge-red">0%</span></td>
+          <td><code>0% (0/66)</code></td>
+          <td><code>1.199ms / 2.759ms</code></td>
+          <td><code>0ms / 0ms</code></td>
+        </tr>
+      
+        <tr>
+          <td><strong>Configuration C: Router + Policy</strong><br><small style="color:#64748b;">Semantic vector router plus deterministic policy engine (amount caps, quotas, cross-account integrity).</small></td>
+          <td><span class="badge badge-blue">71.6%</span></td>
+          <td><code>47.4% / 71.6%</code></td>
+          <td><code>457 (-97.2%)</code></td>
+          <td><span class="badge badge-blue">25%</span></td>
+          <td><code>0% (0/66)</code></td>
+          <td><code>1.074ms / 1.925ms</code></td>
+          <td><code>0.001ms / 0.119ms</code></td>
+        </tr>
+      
+        <tr>
+          <td><strong>Configuration D: Full Gateway</strong><br><small style="color:#64748b;">Full Warden Gateway: Semantic Router + Policy Engine + Security Scanner (prompt injection, poisoning, rug-pull, PII).</small></td>
+          <td><span class="badge badge-blue">71.6%</span></td>
+          <td><code>47.4% / 71.6%</code></td>
+          <td><code>457 (-97.2%)</code></td>
+          <td><span class="badge badge-green">100%</span></td>
+          <td><code>0% (0/66)</code></td>
+          <td><code>1.042ms / 1.837ms</code></td>
+          <td><code>0.005ms / 0.024ms</code></td>
+        </tr>
+      
+    </tbody>
+  </table>
+
+  <h2 style="margin-top: 3rem;">Visual Performance Charts</h2>
+  <div style="background:#0f172a; padding:1.5rem; border-radius:0.75rem; border:1px solid #1e293b; text-align:center;">
+    <img src="eval_charts.svg" alt="Evaluation Comparison Charts" style="max-width:100%; height:auto;" />
+  </div>
+</body>
+</html>

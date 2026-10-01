@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1100" height="750" viewBox="0 0 1100 750" xmlns="http://www.w3.org/2000/svg" style="background:#090d16; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="tokenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="securityGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+
+  <!-- Header -->
+  <text x="40" y="45" font-size="22" font-weight="bold" fill="#f8fafc">Warden Gateway Evaluation Benchmark</text>
+  <text x="40" y="70" font-size="13" fill="#94a3b8">Comparative evaluation across 4 configurations (Baseline vs Router vs Policy vs Full Gateway)</text>
+
+  <!-- Panel 1: Prompt Tokens per Task (Bar Chart) -->
+  <g transform="translate(40, 100)">
+    <rect width="480" height="280" rx="12" fill="#0f172a" stroke="#1e293b" />
+    <text x="20" y="30" font-size="15" font-weight="bold" fill="#e2e8f0">Prompt Tokens Loaded per Task</text>
+    <text x="20" y="48" font-size="11" fill="#64748b">Direct unrouted exposure vs dynamic discovery at 200 tools</text>
+
+    <!-- Bars -->
+    <!-- Baseline -->
+    <text x="20" y="90" font-size="12" fill="#94a3b8">Baseline (All 200 Tools)</text>
+    <rect x="20" y="100" width="380" height="26" rx="4" fill="#475569" />
+    <text x="410" y="118" font-size="12" font-weight="bold" fill="#f1f5f9">16,574</text>
+
+    <!-- Router Only -->
+    <text x="20" y="150" font-size="12" fill="#94a3b8">Router Only (Dynamic)</text>
+    <rect x="20" y="160" width="10" height="26" rx="4" fill="#06b6d4" />
+    <text x="40" y="178" font-size="12" font-weight="bold" fill="#06b6d4">457 (-97.2%)</text>
+
+    <!-- Router + Policy -->
+    <text x="20" y="210" font-size="12" fill="#94a3b8">Router + Policy</text>
+    <rect x="20" y="220" width="10" height="26" rx="4" fill="#06b6d4" />
+    <text x="40" y="238" font-size="12" font-weight="bold" fill="#06b6d4">457 (-97.2%)</text>
+
+    <!-- Full Gateway -->
+    <text x="20" y="260" font-size="12" fill="#94a3b8">Full Gateway</text>
+    <rect x="20" y="265" width="10" height="15" rx="4" fill="#10b981" />
+    <text x="40" y="278" font-size="11" font-weight="bold" fill="#10b981">457 (-97.2%)</text>
+  </g>
+
+  <!-- Panel 2: Attack Block Rate & False Positives -->
+  <g transform="translate(560, 100)">
+    <rect width="500" height="280" rx="12" fill="#0f172a" stroke="#1e293b" />
+    <text x="20" y="30" font-size="15" font-weight="bold" fill="#e2e8f0">Security Defense: Block Rate vs False Positives</text>
+    <text x="20" y="48" font-size="11" fill="#64748b">44 red-team attacks vs 66 benign domain requests</text>
+
+    <!-- Legend -->
+    <circle cx="280" cy="28" r="5" fill="#10b981" />
+    <text x="290" y="32" font-size="11" fill="#94a3b8">Attack Block Rate</text>
+    <circle cx="410" cy="28" r="5" fill="#f59e0b" />
+    <text x="420" y="32" font-size="11" fill="#94a3b8">False Positives</text>
+
+    <!-- Config Bars -->
+    <!-- Baseline -->
+    <text x="20" y="90" font-size="12" fill="#94a3b8">Baseline</text>
+    <rect x="150" y="75" width="10" height="20" rx="3" fill="#ef4444" />
+    <text x="170" y="90" font-size="12" font-weight="bold" fill="#ef4444">0% Blocked</text>
+
+    <!-- Router Only -->
+    <text x="20" y="140" font-size="12" fill="#94a3b8">Router Only</text>
+    <rect x="150" y="125" width="10" height="20" rx="3" fill="#f97316" />
+    <text x="175" y="140" font-size="12" font-weight="bold" fill="#f97316">0% (Passive)</text>
+
+    <!-- Router + Policy -->
+    <text x="20" y="190" font-size="12" fill="#94a3b8">Router + Policy</text>
+    <rect x="150" y="175" width="75" height="20" rx="3" fill="#eab308" />
+    <text x="235" y="190" font-size="12" font-weight="bold" fill="#eab308">25% (Argument Caps)</text>
+
+    <!-- Full Gateway -->
+    <text x="20" y="240" font-size="12" fill="#94a3b8">Full Gateway</text>
+    <rect x="150" y="225" width="300" height="20" rx="3" fill="#10b981" />
+    <text x="460" y="240" font-size="12" font-weight="bold" fill="#10b981">100%</text>
+    <text x="150" y="260" font-size="11" fill="#38bdf8">False Positive Rate: 0% (66/66 benign preserved)</text>
+  </g>
+
+  <!-- Panel 3: Latency Overhead Breakdown (Router vs Policy/Scanner) -->
+  <g transform="translate(40, 410)">
+    <rect width="480" height="300" rx="12" fill="#0f172a" stroke="#1e293b" />
+    <text x="20" y="30" font-size="15" font-weight="bold" fill="#e2e8f0">Added Latency Breakdown (ms)</text>
+    <text x="20" y="48" font-size="11" fill="#64748b">Reported separately: Router search vs Policy / Scanner checks</text>
+
+    <!-- Router Search Latency -->
+    <text x="20" y="90" font-size="13" font-weight="bold" fill="#38bdf8">Vector Router Search</text>
+    <text x="20" y="110" font-size="12" fill="#94a3b8">P50 Latency: 1.042 ms</text>
+    <rect x="180" y="98" width="120" height="14" rx="3" fill="#0284c7" />
+    <text x="20" y="135" font-size="12" fill="#94a3b8">P95 Latency: 1.837 ms</text>
+    <rect x="180" y="123" width="220" height="14" rx="3" fill="#0369a1" />
+
+    <!-- Policy & Scanner Latency -->
+    <text x="20" y="180" font-size="13" font-weight="bold" fill="#a855f7">Deterministic Policy &amp; Scanner</text>
+    <text x="20" y="200" font-size="12" fill="#94a3b8">P50 Latency: 0.005 ms</text>
+    <rect x="180" y="188" width="60" height="14" rx="3" fill="#9333ea" />
+    <text x="20" y="225" font-size="12" fill="#94a3b8">P95 Latency: 0.024 ms</text>
+    <rect x="180" y="213" width="115" height="14" rx="3" fill="#7e22ce" />
+
+    <text x="20" y="270" font-size="12" font-weight="bold" fill="#10b981">Total Added Gateway P50: 1.047 ms (P95: 1.861 ms)</text>
+  </g>
+
+  <!-- Panel 4: Task Success & Selection Accuracy -->
+  <g transform="translate(560, 410)">
+    <rect width="500" height="300" rx="12" fill="#0f172a" stroke="#1e293b" />
+    <text x="20" y="30" font-size="15" font-weight="bold" fill="#e2e8f0">Task Success &amp; Tool Selection Accuracy</text>
+    <text x="20" y="48" font-size="11" fill="#64748b">Evaluated on 95 challenging test queries across 9 domains</text>
+
+    <!-- Baseline -->
+    <text x="20" y="90" font-size="12" fill="#94a3b8">Baseline (Unrouted)</text>
+    <rect x="160" y="78" width="145" height="14" rx="3" fill="#64748b" />
+    <text x="315" y="90" font-size="11" fill="#cbd5e1">Top-1: 60% | Top-5: 88.4%</text>
+
+    <!-- Router Only -->
+    <text x="20" y="135" font-size="12" fill="#94a3b8">Router Only</text>
+    <rect x="160" y="123" width="175" height="14" rx="3" fill="#06b6d4" />
+    <text x="345" y="135" font-size="11" font-weight="bold" fill="#06b6d4">Top-1: 47.4% | Top-5: 71.6%</text>
+
+    <!-- Router + Policy -->
+    <text x="20" y="180" font-size="12" fill="#94a3b8">Router + Policy</text>
+    <rect x="160" y="168" width="175" height="14" rx="3" fill="#06b6d4" />
+    <text x="345" y="180" font-size="11" font-weight="bold" fill="#06b6d4">Top-1: 47.4% | Top-5: 71.6%</text>
+
+    <!-- Full Gateway -->
+    <text x="20" y="225" font-size="12" fill="#94a3b8">Full Gateway</text>
+    <rect x="160" y="213" width="175" height="14" rx="3" fill="#10b981" />
+    <text x="345" y="225" font-size="11" font-weight="bold" fill="#10b981">Top-1: 47.4% | Top-5: 71.6%</text>
+
+    <text x="20" y="270" font-size="12" fill="#38bdf8">Task Completion Rate: 71.6% with zero false positive blocks</text>
+  </g>
+</svg>

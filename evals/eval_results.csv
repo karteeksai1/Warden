@@ -1,0 +1,5 @@
+configuration,router_enabled,policy_enabled,scanner_enabled,task_success_rate_pct,top1_accuracy_pct,top5_accuracy_pct,avg_prompt_tokens,token_reduction_pct,attack_block_rate_pct,false_positive_rate_pct,router_latency_p50_ms,router_latency_p95_ms,policy_scanner_latency_p50_ms,policy_scanner_latency_p95_ms,total_added_latency_p50_ms,total_added_latency_p95_ms
+"Configuration A: Baseline",false,false,false,88.4,60,88.4,16574,0,0,0,0,0,0,0,0,0
+"Configuration B: Router Only",true,false,false,71.6,47.4,71.6,457,97.2,0,0,1.199,2.759,0,0,1.199,2.759
+"Configuration C: Router + Policy",true,true,false,71.6,47.4,71.6,457,97.2,25,0,1.074,1.925,0.001,0.119,1.075,2.044
+"Configuration D: Full Gateway",true,true,true,71.6,47.4,71.6,457,97.2,100,0,1.042,1.837,0.005,0.024,1.047,1.861
