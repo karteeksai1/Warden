@@ -117,3 +117,54 @@ export interface FullBenchmarkReport {
     routerLatencyP95At200Ms: number;
   };
 }
+
+export type AttackCategory =
+  | "poisoning"
+  | "output_injection"
+  | "schema_change"
+  | "argument_abuse";
+
+export type BenignCategory =
+  | "tool_description"
+  | "tool_call_arguments"
+  | "tool_output"
+  | "schema_verification";
+
+export type SecurityVerdictAction =
+  | "allow"
+  | "block"
+  | "quarantine"
+  | "require_approval";
+
+export interface SecurityExpectedVerdict {
+  safe: boolean;
+  action: SecurityVerdictAction;
+  reason: string;
+  category: AttackCategory | BenignCategory;
+  flags?: string[];
+  policyRule?: string;
+  quarantined?: boolean;
+}
+
+export interface SecurityEvalCase {
+  id: string;
+  category: AttackCategory | BenignCategory;
+  subCategory?: string;
+  name: string;
+  description: string;
+  target: "tool_description" | "tool_call_input" | "tool_call_output" | "tool_schema";
+  toolName?: string;
+  input: unknown;
+  expectedVerdict: SecurityExpectedVerdict;
+  metadata?: Record<string, unknown>;
+}
+
+export interface SecurityEvalDataset {
+  version: string;
+  type: "attacks" | "benign";
+  generatedAt: string;
+  totalCases: number;
+  categoryCounts: Record<string, number>;
+  cases: SecurityEvalCase[];
+}
+
