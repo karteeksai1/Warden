@@ -1,0 +1,777 @@
+[
+  {
+    "id": "query_001",
+    "text": "this prospect told us they have zero budget so disqualify them",
+    "expectedTool": "crm.update_lead_status",
+    "acceptableTools": [
+      "crm.update_lead_status",
+      "crm.modify_lead_stage"
+    ],
+    "domain": "crm",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_002",
+    "text": "send refnd for #1092",
+    "expectedTool": "refunds.issue_refund",
+    "acceptableTools": [
+      "refunds.issue_refund",
+      "refunds.process_customer_reimbursement"
+    ],
+    "domain": "refunds",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_003",
+    "text": "what error was printed to stderr right before the crash?",
+    "expectedTool": "cloudops.fetch_container_logs",
+    "acceptableTools": [
+      "cloudops.fetch_container_logs",
+      "cloudops.stream_application_logs"
+    ],
+    "domain": "cloudops",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_004",
+    "text": "schedul meeting with sarah",
+    "expectedTool": "calendar.create_event",
+    "acceptableTools": [
+      "calendar.create_event",
+      "calendar.schedule_calendar_entry"
+    ],
+    "domain": "calendar",
+    "style": "typo",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_005",
+    "text": "packet loss between us-east and eu-west",
+    "expectedTool": "cloudops.get_network_latency",
+    "acceptableTools": [
+      "cloudops.get_network_latency"
+    ],
+    "domain": "cloudops",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_006",
+    "text": "senf confirmation mail to bob@example.com",
+    "expectedTool": "email.send_confirmation",
+    "acceptableTools": [
+      "email.send_confirmation",
+      "email.dispatch_transactional_receipt"
+    ],
+    "domain": "email",
+    "style": "typo",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_007",
+    "text": "who is handling the acme enterprise account?",
+    "expectedTool": "crm.assign_account_rep",
+    "acceptableTools": [
+      "crm.assign_account_rep"
+    ],
+    "domain": "crm",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_008",
+    "text": "evict all workloads from k8s node ip-10-0-12-4",
+    "expectedTool": "cloudops.drain_node",
+    "acceptableTools": [
+      "cloudops.drain_node"
+    ],
+    "domain": "cloudops",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_009",
+    "text": "did i get double booked on tuesday?",
+    "expectedTool": "calendar.detect_schedule_conflicts",
+    "acceptableTools": [
+      "calendar.detect_schedule_conflicts"
+    ],
+    "domain": "calendar",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_010",
+    "text": "cust_901 purchase history",
+    "expectedTool": "orders.list_orders",
+    "acceptableTools": [
+      "orders.list_orders"
+    ],
+    "domain": "orders",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_011",
+    "text": "return window electronics",
+    "expectedTool": "kb.search_policy",
+    "acceptableTools": [
+      "kb.search_policy",
+      "kb.lookup_support_article"
+    ],
+    "domain": "kb",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_012",
+    "text": "status ref_7812",
+    "expectedTool": "refunds.get_refund_status",
+    "acceptableTools": [
+      "refunds.get_refund_status"
+    ],
+    "domain": "refunds",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_013",
+    "text": "release conference room 4c since the meeting was cancelled",
+    "expectedTool": "calendar.release_conference_room",
+    "acceptableTools": [
+      "calendar.release_conference_room"
+    ],
+    "domain": "calendar",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_014",
+    "text": "chekc oom kill swap stats node2",
+    "expectedTool": "cloudops.get_memory_metrics",
+    "acceptableTools": [
+      "cloudops.get_memory_metrics"
+    ],
+    "domain": "cloudops",
+    "style": "typo",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_015",
+    "text": "can someone get a store credit if 30 days have already elapsed?",
+    "expectedTool": "kb.search_policy",
+    "acceptableTools": [
+      "kb.search_policy",
+      "kb.lookup_support_article"
+    ],
+    "domain": "kb",
+    "style": "indirect",
+    "difficulty": "hard",
+    "split": "dev"
+  },
+  {
+    "id": "query_016",
+    "text": "eng department members",
+    "expectedTool": "hr.list_department_members",
+    "acceptableTools": [
+      "hr.list_department_members"
+    ],
+    "domain": "hr",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_017",
+    "text": "who does jason report to in the engineering department?",
+    "expectedTool": "hr.get_reporting_chain",
+    "acceptableTools": [
+      "hr.get_reporting_chain"
+    ],
+    "domain": "hr",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_018",
+    "text": "aprove vacation for dave",
+    "expectedTool": "hr.approve_pto_request",
+    "acceptableTools": [
+      "hr.approve_pto_request"
+    ],
+    "domain": "hr",
+    "style": "typo",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_019",
+    "text": "put an all-hands product roadmap sync on the calendar for wednesday",
+    "expectedTool": "calendar.create_event",
+    "acceptableTools": [
+      "calendar.create_event",
+      "calendar.schedule_calendar_entry"
+    ],
+    "domain": "calendar",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_020",
+    "text": "need 2 see what client ows us",
+    "expectedTool": "billing.get_account_balance",
+    "acceptableTools": [
+      "billing.get_account_balance",
+      "billing.fetch_outstanding_dues"
+    ],
+    "domain": "billing",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_021",
+    "text": "customer says their bank put fraud hold on card which is now lifted, charge it again",
+    "expectedTool": "billing.retry_failed_payment",
+    "acceptableTools": [
+      "billing.retry_failed_payment"
+    ],
+    "domain": "billing",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_022",
+    "text": "cancel the one-on-one since my lead is travelling today",
+    "expectedTool": "calendar.delete_event",
+    "acceptableTools": [
+      "calendar.delete_event",
+      "calendar.cancel_scheduled_meeting"
+    ],
+    "domain": "calendar",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_023",
+    "text": "drop 4pm sync",
+    "expectedTool": "calendar.delete_event",
+    "acceptableTools": [
+      "calendar.delete_event",
+      "calendar.cancel_scheduled_meeting"
+    ],
+    "domain": "calendar",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_024",
+    "text": "interview slot for candidate 99",
+    "expectedTool": "hr.schedule_interview",
+    "acceptableTools": [
+      "hr.schedule_interview",
+      "hr.book_candidate_screening"
+    ],
+    "domain": "hr",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_025",
+    "text": "convert lead_5 to deal",
+    "expectedTool": "crm.convert_lead_to_deal",
+    "acceptableTools": [
+      "crm.convert_lead_to_deal"
+    ],
+    "domain": "crm",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_026",
+    "text": "reschedul 3pm sync with marketing",
+    "expectedTool": "calendar.reschedule_event",
+    "acceptableTools": [
+      "calendar.reschedule_event",
+      "calendar.move_meeting_timeslot"
+    ],
+    "domain": "calendar",
+    "style": "typo",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_027",
+    "text": "sarah wants to know how many vacation days she has left before december",
+    "expectedTool": "hr.get_pto_balance",
+    "acceptableTools": [
+      "hr.get_pto_balance",
+      "hr.query_vacation_allowance"
+    ],
+    "domain": "hr",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_028",
+    "text": "does the customer have any unpaid balances or leftover credits on their account?",
+    "expectedTool": "billing.get_account_balance",
+    "acceptableTools": [
+      "billing.get_account_balance",
+      "billing.fetch_outstanding_dues"
+    ],
+    "domain": "billing",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_029",
+    "text": "start onboarding workflow for engineer joining next monday",
+    "expectedTool": "hr.initiate_onboarding",
+    "acceptableTools": [
+      "hr.initiate_onboarding"
+    ],
+    "domain": "hr",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_030",
+    "text": "verify employment letter for mortgage lender",
+    "expectedTool": "hr.verify_employment_status",
+    "acceptableTools": [
+      "hr.verify_employment_status"
+    ],
+    "domain": "hr",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_031",
+    "text": "the latest release broke authentication, revert immediately",
+    "expectedTool": "cloudops.rollback_deployment",
+    "acceptableTools": [
+      "cloudops.rollback_deployment",
+      "cloudops.revert_software_version"
+    ],
+    "domain": "cloudops",
+    "style": "indirect",
+    "difficulty": "hard",
+    "split": "dev"
+  },
+  {
+    "id": "query_032",
+    "text": "free slots tmrw afternoon",
+    "expectedTool": "calendar.find_free_meeting_slots",
+    "acceptableTools": [
+      "calendar.find_free_meeting_slots",
+      "calendar.query_calendar_availability"
+    ],
+    "domain": "calendar",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_033",
+    "text": "new deal 50k acme",
+    "expectedTool": "crm.create_deal",
+    "acceptableTools": [
+      "crm.create_deal",
+      "crm.open_new_sales_opportunity"
+    ],
+    "domain": "crm",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_034",
+    "text": "restart nginx web-1",
+    "expectedTool": "cloudops.restart_service",
+    "acceptableTools": [
+      "cloudops.restart_service",
+      "cloudops.reboot_server_instance"
+    ],
+    "domain": "cloudops",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_035",
+    "text": "what's on my schedule today?",
+    "expectedTool": "calendar.get_daily_agenda",
+    "acceptableTools": [
+      "calendar.get_daily_agenda",
+      "calendar.view_daily_itinerary"
+    ],
+    "domain": "calendar",
+    "style": "indirect",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_036",
+    "text": "what is our policy regarding items returned without original packaging?",
+    "expectedTool": "kb.search_policy",
+    "acceptableTools": [
+      "kb.search_policy",
+      "kb.lookup_support_article"
+    ],
+    "domain": "kb",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_037",
+    "text": "add note to cust_5",
+    "expectedTool": "crm.add_customer_note",
+    "acceptableTools": [
+      "crm.add_customer_note"
+    ],
+    "domain": "crm",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_038",
+    "text": "take backup of postgres primary before running migrations",
+    "expectedTool": "cloudops.trigger_db_snapshot",
+    "acceptableTools": [
+      "cloudops.trigger_db_snapshot"
+    ],
+    "domain": "cloudops",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_039",
+    "text": "users are seeing stale product data, wipe the cached keys",
+    "expectedTool": "cloudops.flush_cache_cluster",
+    "acceptableTools": [
+      "cloudops.flush_cache_cluster"
+    ],
+    "domain": "cloudops",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_040",
+    "text": "srch contacts in seattle area",
+    "expectedTool": "crm.search_contacts",
+    "acceptableTools": [
+      "crm.search_contacts"
+    ],
+    "domain": "crm",
+    "style": "typo",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_041",
+    "text": "who is our primary technical liaison at stripe?",
+    "expectedTool": "crm.search_contacts",
+    "acceptableTools": [
+      "crm.search_contacts"
+    ],
+    "domain": "crm",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_042",
+    "text": "how much state sales tax did we collect in new york this quarter?",
+    "expectedTool": "billing.generate_tax_report",
+    "acceptableTools": [
+      "billing.generate_tax_report"
+    ],
+    "domain": "billing",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_043",
+    "text": "mark compliance training completed for new joiner",
+    "expectedTool": "hr.track_onboarding_checklist",
+    "acceptableTools": [
+      "hr.track_onboarding_checklist"
+    ],
+    "domain": "hr",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_044",
+    "text": "void invoice 1044 because it was sent by mistake",
+    "expectedTool": "billing.void_invoice",
+    "acceptableTools": [
+      "billing.void_invoice"
+    ],
+    "domain": "billing",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_045",
+    "text": "customer wants to pause billing for 2 months while travelling",
+    "expectedTool": "billing.pause_subscription",
+    "acceptableTools": [
+      "billing.pause_subscription"
+    ],
+    "domain": "billing",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_046",
+    "text": "approve pto req_44",
+    "expectedTool": "hr.approve_pto_request",
+    "acceptableTools": [
+      "hr.approve_pto_request"
+    ],
+    "domain": "hr",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_047",
+    "text": "book vacation oct 10-15",
+    "expectedTool": "hr.request_pto",
+    "acceptableTools": [
+      "hr.request_pto",
+      "hr.submit_time_off_request"
+    ],
+    "domain": "hr",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_048",
+    "text": "dave moved to a new director role and got a new corporate email",
+    "expectedTool": "crm.update_contact",
+    "acceptableTools": [
+      "crm.update_contact",
+      "crm.modify_contact_info"
+    ],
+    "domain": "crm",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_049",
+    "text": "mark lead_109 qualified",
+    "expectedTool": "crm.update_lead_status",
+    "acceptableTools": [
+      "crm.update_lead_status",
+      "crm.modify_lead_stage"
+    ],
+    "domain": "crm",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_050",
+    "text": "resched 3pm mtg",
+    "expectedTool": "calendar.reschedule_event",
+    "acceptableTools": [
+      "calendar.reschedule_event",
+      "calendar.move_meeting_timeslot"
+    ],
+    "domain": "calendar",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_051",
+    "text": "did anyone follow up with the inbound prospect from last tuesday?",
+    "expectedTool": "crm.get_lead",
+    "acceptableTools": [
+      "crm.get_lead",
+      "crm.lookup_lead_info"
+    ],
+    "domain": "crm",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_052",
+    "text": "chekc invoce status inv-981",
+    "expectedTool": "billing.get_invoice",
+    "acceptableTools": [
+      "billing.get_invoice",
+      "billing.retrieve_bill_by_number"
+    ],
+    "domain": "billing",
+    "style": "typo",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_053",
+    "text": "charge 50 bucks on stored mastercard",
+    "expectedTool": "billing.charge_credit_card",
+    "acceptableTools": [
+      "billing.charge_credit_card"
+    ],
+    "domain": "billing",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_054",
+    "text": "cancl subscrip sub_881",
+    "expectedTool": "billing.cancel_subscription",
+    "acceptableTools": [
+      "billing.cancel_subscription",
+      "billing.terminate_recurring_plan"
+    ],
+    "domain": "billing",
+    "style": "typo",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_055",
+    "text": "shoot an email to the buyer confirming their money was sent back",
+    "expectedTool": "email.send_confirmation",
+    "acceptableTools": [
+      "email.send_confirmation",
+      "email.dispatch_transactional_receipt"
+    ],
+    "domain": "email",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_056",
+    "text": "when did alex join the company and what is his job grade?",
+    "expectedTool": "hr.get_employee_profile",
+    "acceptableTools": [
+      "hr.get_employee_profile",
+      "hr.fetch_worker_record"
+    ],
+    "domain": "hr",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_057",
+    "text": "add contact sarah@target.com",
+    "expectedTool": "crm.create_contact",
+    "acceptableTools": [
+      "crm.create_contact"
+    ],
+    "domain": "crm",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_058",
+    "text": "log call with bob 15m",
+    "expectedTool": "crm.log_call_activity",
+    "acceptableTools": [
+      "crm.log_call_activity"
+    ],
+    "domain": "crm",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_059",
+    "text": "send receipt 4 order 881",
+    "expectedTool": "email.send_confirmation",
+    "acceptableTools": [
+      "email.send_confirmation",
+      "email.dispatch_transactional_receipt"
+    ],
+    "domain": "email",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_060",
+    "text": "disck space running low on srv-01",
+    "expectedTool": "cloudops.check_disk_usage",
+    "acceptableTools": [
+      "cloudops.check_disk_usage"
+    ],
+    "domain": "cloudops",
+    "style": "typo",
+    "difficulty": "medium",
+    "split": "dev"
+  },
+  {
+    "id": "query_061",
+    "text": "set ooo next week",
+    "expectedTool": "calendar.set_out_of_office",
+    "acceptableTools": [
+      "calendar.set_out_of_office"
+    ],
+    "domain": "calendar",
+    "style": "terse",
+    "difficulty": "easy",
+    "split": "dev"
+  },
+  {
+    "id": "query_062",
+    "text": "save this vp of engineering's phone number under the cisco account",
+    "expectedTool": "crm.create_contact",
+    "acceptableTools": [
+      "crm.create_contact"
+    ],
+    "domain": "crm",
+    "style": "indirect",
+    "difficulty": "medium",
+    "split": "dev"
+  }
+]
