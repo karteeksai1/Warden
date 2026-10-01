@@ -143,6 +143,16 @@ export class DownstreamManager {
     await this.connectServer(name);
   }
 
+  getServers(): Array<{ name: string; transport: string; endpoint: string; status: string; toolsCount: number }> {
+    return Array.from(this.servers.values()).map((s) => ({
+      name: s.config.name,
+      transport: s.config.transport,
+      endpoint: s.config.endpoint,
+      status: s.status,
+      toolsCount: s.tools.size
+    }));
+  }
+
   getAllTools(): NamespacedTool[] {
     return Array.from(this.toolRegistry.values());
   }
