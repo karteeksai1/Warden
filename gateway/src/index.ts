@@ -13,6 +13,7 @@ export * from "./proxy.js";
 export * from "./app.js";
 export * from "./router.js";
 export * from "./scanner.js";
+export * from "./telemetry/index.js";
 
 async function bootstrap() {
   const env = parseEnvironment(process.env);
